@@ -7,7 +7,20 @@ Exploring the module Tkinter
 
 2. [Ceasar Cipher](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/cipher_cesar): Is a simple GUI to encrypt text using the Ceasar cipher. Also you can open and save .txt file to encrypt or decrypt.
 
-3. [Numerical methods](): This project implements various numerical algorithms.
-    i. [Bisection Method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/bisection)
-    ii. [Fixed Point method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/fix_point)
+3.  <details>
+    <summary>Numerical methods</summary>
 
+    [Main page](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods): This project implements various numerical algorithms.
+    
+
+    + [Bisection Method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/bisection)
+    + [Fixed Point method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/fix_point)        
+    + Newton method
+    + Secant method
+    + Regula falsi
+    + Steffensen's method
+
+    </details> 
+
+
+  
