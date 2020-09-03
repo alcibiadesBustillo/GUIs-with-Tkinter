@@ -7,3 +7,5 @@ Exploring the module Tkinter
 
 2. [Ceasar Cipher](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/cipher_cesar): Is a simple GUI to encrypt text using the Ceasar cipher. Also you can open and save .txt file to encrypt or decrypt.
 
+3. [Numerical methods](): This project implements various numerical algorithms.
+
