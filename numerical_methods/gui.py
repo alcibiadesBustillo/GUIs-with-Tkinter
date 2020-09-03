@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font as tkfont
 from bisection.bisection import bisection
+from fix_point.fix_point import fix_point
 
 class NumericlaApp(tk.Tk):
 
@@ -18,7 +19,7 @@ class NumericlaApp(tk.Tk):
         # container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, BisectionMethod):
+        for F in (StartPage, PageOne, BisectionMethod, FixPointMethod):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -70,7 +71,7 @@ class PageOne(tk.Frame):
         # Create a Tkinter variable
         self.clicked = tk.StringVar(self)
 
-        CHOICES = [ 'NONE','Bisection Method', 'Method 2', 'Method 3']
+        CHOICES = [ 'NONE','Bisection Method', 'Fix Point Method', 'Method 3']
         self.clicked.set(CHOICES[0])
 
         popup_menu = tk.OptionMenu(frame_buttons, self.clicked, *CHOICES)
@@ -86,8 +87,8 @@ class PageOne(tk.Frame):
             print('Select a method')            
         elif method == 'Bisection Method':
             self.controller.show_frame('BisectionMethod')
-        elif method == 'Method 2':
-            print('method 2')
+        elif method == 'Fix Point Method':
+            self.controller.show_frame('FixPointMethod')
         elif method == 'Method 3':
             print('method 3')
 
@@ -120,17 +121,17 @@ class BisectionMethod(tk.Frame):
         label_function = tk.Label(left_frame, text="Function")
         label_function.grid(row=1, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
         
-        label_function = tk.Label(left_frame, text="Lower Limit")
-        label_function.grid(row=2, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+        label_lowerLimit = tk.Label(left_frame, text="Lower Limit")
+        label_lowerLimit.grid(row=2, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
 
-        label_function = tk.Label(left_frame, text="Upper limit")
-        label_function.grid(row=3, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+        label_upperLimit = tk.Label(left_frame, text="Upper limit")
+        label_upperLimit.grid(row=3, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
 
-        label_function = tk.Label(left_frame, text="Tolerance")
-        label_function.grid(row=4, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+        label_tolerance = tk.Label(left_frame, text="Tolerance")
+        label_tolerance.grid(row=4, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
 
-        label_function = tk.Label(left_frame, text="Iteracions")
-        label_function.grid(row=5, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+        label_iterations = tk.Label(left_frame, text="Iterations")
+        label_iterations.grid(row=5, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
 
         # # Entries
         self.function = tk.Entry(left_frame, width=30)
@@ -193,6 +194,96 @@ class BisectionMethod(tk.Frame):
             self.text_edit.insert(tk.END, e)
         
 
+class FixPointMethod(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Welcome to Fix Point Method", font=controller.title_font)
+        label.grid(row=0, column=1)
+
+        # Left frame
+        left_frame = tk.Frame(self, width=200, height= 400, bg='grey')
+        left_frame.grid(row=0, column=0, padx=10, pady=5)
+
+        # right frame
+        right_frame = tk.Frame(self, width=450, height=400, bg='grey')
+        right_frame.grid(row=0, column=1, padx=10, pady=5)
+
+        # All left frame
+        title = tk.Label(left_frame, text="Fix Point Method", relief=tk.RAISED)
+        title.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+
+       
+        # # labels
+        label_function = tk.Label(left_frame, text="Function:")
+        label_function.grid(row=1, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')        
+
+        label_initialApx = tk.Label(left_frame, text="Initial Aproximation po:")
+        label_initialApx.grid(row=2, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        label_tolerance = tk.Label(left_frame, text="Tolerance:")
+        label_tolerance.grid(row=3, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        label_iterations = tk.Label(left_frame, text="Iterations:")
+        label_iterations.grid(row=4, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        # # Entries
+        self.function = tk.Entry(left_frame, width=30)
+        self.function.grid(row=1, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        self.initialApx = tk.Entry(left_frame, width=30)
+        self.initialApx.grid(row=2, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')       
+
+        self.tolerance = tk.Entry(left_frame, width=30)
+        self.tolerance.grid(row=3, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        self.iteration = tk.Entry(left_frame, width=30)
+        self.iteration.grid(row=4, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')               
+        
+        button_compute = tk.Button(left_frame, text="Compute",
+                            command=self.compute, bg="yellow", fg="red")
+        button_compute.grid(row=5, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        
+        button = tk.Button(left_frame, text="Go to the start page",
+                            command=lambda: controller.show_frame("PageOne"))
+        button.grid(row=5, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        
+        # text
+             
+        self.text_edit = tk.Text(right_frame)
+        self.text_edit.grid(row=0, column=0, sticky='nsew')
+    
+    def compute(self):
+        print('computando....')
+        try:
+            f = self.function.get()
+            po = self.initialApx.get()           
+            tol = self.tolerance.get()
+            n = self.iteration.get()            
+            
+            p, table = fix_point(f, float(po), float(tol), int(n))
+            
+            if p != None:
+                self.text_edit.delete("1.0", tk.END)
+                self.text_edit.insert(tk.END, table)
+            else:
+                self.text_edit.delete("1.0", tk.END)
+                self.text_edit.insert(tk.END, "The method fail")
+
+            # self.function.delete(0, tk.END)
+            # self.lower_limit.delete(0, tk.END)
+            # self.upper_limit.delete(0, tk.END)
+            # self.tolerance.delete(0, tk.END)
+            # self.iteration.delete(0, tk.END)
+
+            print(table)
+        except Exception as e:
+            self.text_edit.delete("1.0", tk.END)
+            self.text_edit.insert(tk.END, e)
+        
 
 
 class Template(tk.Frame):
