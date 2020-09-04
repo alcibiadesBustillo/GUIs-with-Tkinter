@@ -2,6 +2,11 @@ import tkinter as tk
 from tkinter import font as tkfont
 from bisection.bisection import bisection
 from fix_point.fix_point import fix_point
+from newton.newton import newton
+import os
+from PIL import Image, ImageTk
+
+BASE_DIRECTORY = os.getcwd()
 
 class NumericlaApp(tk.Tk):
 
@@ -19,7 +24,7 @@ class NumericlaApp(tk.Tk):
         # container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, BisectionMethod, FixPointMethod):
+        for F in (StartPage, PageOne, BisectionMethod, FixPointMethod, NewtonMethod):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -42,15 +47,33 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="This is the start page", font=controller.title_font)
-        label.grid(row=0, column=0)
+        #label = tk.Label(self, text="This is the start page", font=controller.title_font)
+        #label.grid(row=0, column=0)
 
-        button1 = tk.Button(self, text="Go to Page One",
-                            command=lambda: controller.show_frame("PageOne"))
-        # button2 = tk.Button(self, text="Go to Page Two",
-        #                     command=lambda: controller.show_frame("PageTwo"))
-        button1.grid(row=2, column=0)
-        # button2.grid(row=2, column=1)
+
+        # Left frame
+        left_frame = tk.Frame(self, width=200, height= 400, bg='black')
+        left_frame.grid(row=0, column=0, padx=10, pady=5)
+
+        # right frame
+        right_frame = tk.Frame(self, width=200, height=400, bg='grey')
+        right_frame.grid(row=0, column=1, padx=10, pady=5)
+
+        # All left frame
+        explanation = """ Numerical analysis is the study of algorithms that 
+        use numerical approximation (as opposed to symbolic manipulations) for
+        the problems of mathematical analysis (as distinguished from 
+        discrete mathematics).
+                                                                    Wikipidia.
+        """
+
+        title_left = tk.Label(left_frame, text=explanation, relief=tk.RAISED)
+        title_left.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+
+        button1 = tk.Button(right_frame, text="Go to Algorithms",
+                            command=lambda: controller.show_frame("PageOne"))        
+        button1.grid(row=2, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+        
 
 
 class PageOne(tk.Frame):
@@ -58,39 +81,76 @@ class PageOne(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Welcome to Numerical Methods", font=controller.title_font)
-        label.grid(row=0, column=1)
-        button = tk.Button(self, text="Go to the start page",
-                           command=lambda: controller.show_frame("StartPage"))
-        button.grid(row=1, column=0)
+        
+       
 
-        frame_buttons = tk.Frame(self)
-        frame_buttons.grid(row=2, column=0, sticky='ns')
+        # Left frame
+        left_frame = tk.Frame(self, width=200, height= 400, bg='black')
+        left_frame.grid(row=0, column=0, padx=10, pady=5)
+
+        # right frame
+        right_frame = tk.Frame(self, width=200, height=400, bg='grey')
+        right_frame.grid(row=0, column=1, padx=10, pady=5)
+
+        # All left frame
+        title_left = tk.Label(left_frame, text="Numerical Methods", relief=tk.RAISED)
+        title_left.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+
+        path = os.path.join(BASE_DIRECTORY, 'ico.png')
+        load = Image.open(path).resize((400, 400), Image.ANTIALIAS)
+        render = ImageTk.PhotoImage(load)
+        img = tk.Label(left_frame, image=render, relief=tk.RAISED)
+        img.image = render
+        img.grid(row=1, column=0, padx=10, pady=5)
+        
+
+        # button = tk.Button(left_frame, text="Go to the start page",
+        #                    command=lambda: controller.show_frame("StartPage"))
+        # button.grid(row=3, column=0)
 
         # Dropdown menu
         # Create a Tkinter variable
-        self.clicked = tk.StringVar(self)
+        #self.clicked = tk.StringVar(self)
 
-        CHOICES = [ 'NONE','Bisection Method', 'Fix Point Method', 'Method 3']
-        self.clicked.set(CHOICES[0])
+        # CHOICES = [ 'NONE','Bisection Method', 'Fix Point Method', 'Newton Method']
+        # self.clicked.set(CHOICES[0])
 
-        popup_menu = tk.OptionMenu(frame_buttons, self.clicked, *CHOICES)
-        popup_menu.grid(row=3, column=0)
+        # popup_menu = tk.OptionMenu(right_frame, self.clicked, *CHOICES)
+        # popup_menu.grid(row=0, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+        title_right = tk.Label(right_frame, text="Some Methods", relief=tk.RAISED)
+        title_right.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
 
-        method_button = tk.Button(frame_buttons, text="Go Method", command=self.go_method)
-        method_button.grid(row=4, column=0)
+        method_bis = tk.Button(right_frame, text="Bisection Method", command=lambda: self.go_method('Bisection Method'))
+        method_bis.grid(row=1, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        method_fix = tk.Button(right_frame, text="Fix Point Method", command=lambda: self.go_method('Fix Point Method'))
+        method_fix.grid(row=1, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        method_new = tk.Button(right_frame, text="Newton Method", command=lambda: self.go_method('Newton Method'))
+        method_new.grid(row=2, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        method_sec = tk.Button(right_frame, text="Secant Method", )
+        method_sec.grid(row=2, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        method_reg = tk.Button(right_frame, text="Regula Falsi Method", )
+        method_reg.grid(row=3, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        method_ste = tk.Button(right_frame, text="Steffensen's Method", )
+        method_ste.grid(row=3, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+       
+
     
-    def go_method(self):
+    def go_method(self, method):
         
-        method = self.clicked.get()
+        #method = self.clicked.get()
         if method == 'NONE':
             print('Select a method')            
         elif method == 'Bisection Method':
             self.controller.show_frame('BisectionMethod')
         elif method == 'Fix Point Method':
             self.controller.show_frame('FixPointMethod')
-        elif method == 'Method 3':
-            print('method 3')
+        elif method == 'Newton Method':
+             self.controller.show_frame('NewtonMethod')
 
 
 class BisectionMethod(tk.Frame):
@@ -283,7 +343,109 @@ class FixPointMethod(tk.Frame):
         except Exception as e:
             self.text_edit.delete("1.0", tk.END)
             self.text_edit.insert(tk.END, e)
+
+
+class NewtonMethod(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="Welcome to Newton Method", font=controller.title_font)
+        label.grid(row=0, column=1)
+
+        # Left frame
+        left_frame = tk.Frame(self, width=200, height= 400, bg='grey')
+        left_frame.grid(row=0, column=0, padx=10, pady=5)
+
+        # right frame
+        right_frame = tk.Frame(self, width=450, height=400, bg='grey')
+        right_frame.grid(row=0, column=1, padx=10, pady=5)
+
+        # All left frame
+        title = tk.Label(left_frame, text="Newton Method", relief=tk.RAISED)
+        title.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+
+       
+        # # labels
+        label_function = tk.Label(left_frame, text="Function:")
+        label_function.grid(row=1, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        label_derivative = tk.Label(left_frame, text="Derivative:")
+        label_derivative.grid(row=2, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')        
+
+        label_initialApx = tk.Label(left_frame, text="Initial Aproximation po:")
+        label_initialApx.grid(row=3, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        label_tolerance = tk.Label(left_frame, text="Tolerance:")
+        label_tolerance.grid(row=4, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        label_iterations = tk.Label(left_frame, text="Iterations:")
+        label_iterations.grid(row=5, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        # # Entries
+        self.function = tk.Entry(left_frame, width=30)
+        self.function.grid(row=1, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        self.derivative = tk.Entry(left_frame, width=30)
+        self.derivative.grid(row=2, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        self.initialApx = tk.Entry(left_frame, width=30)
+        self.initialApx.grid(row=3, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')       
+
+        self.tolerance = tk.Entry(left_frame, width=30)
+        self.tolerance.grid(row=4, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        self.iteration = tk.Entry(left_frame, width=30)
+        self.iteration.grid(row=5, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')               
         
+        button_compute = tk.Button(left_frame, text="Compute",
+                            command=self.compute, bg="yellow", fg="red")
+        button_compute.grid(row=6, column=1, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        
+        button = tk.Button(left_frame, text="Go to the start page",
+                            command=lambda: controller.show_frame("PageOne"))
+        button.grid(row=6, column=0, padx=5, pady=5, sticky='w'+'e'+'n'+'s')
+
+        
+        # text
+             
+        self.text_edit = tk.Text(right_frame)
+        self.text_edit.grid(row=0, column=0, sticky='nsew')
+    
+    def compute(self):
+        print('computando....')
+        try:
+            f = self.function.get()
+            g = self.derivative.get()
+            po = self.initialApx.get()
+
+            po = po.replace('e', '2.7182')           
+            po = po.replace('pi', '3.14159')
+            po = eval(po)           
+            
+            tol = self.tolerance.get()
+            n = self.iteration.get()            
+            
+            p, table = newton(f, g, float(po), float(tol), int(n))
+            
+            if p != None:
+                self.text_edit.delete("1.0", tk.END)
+                self.text_edit.insert(tk.END, table)
+            else:
+                self.text_edit.delete("1.0", tk.END)
+                self.text_edit.insert(tk.END, "The method fail")
+
+            # self.function.delete(0, tk.END)
+            # self.lower_limit.delete(0, tk.END)
+            # self.upper_limit.delete(0, tk.END)
+            # self.tolerance.delete(0, tk.END)
+            # self.iteration.delete(0, tk.END)
+
+            print(table)
+        except Exception as e:
+            self.text_edit.delete("1.0", tk.END)
+            self.text_edit.insert(tk.END, e)
 
 
 class Template(tk.Frame):
@@ -299,9 +461,10 @@ class Template(tk.Frame):
 
 
 if __name__ == "__main__":
+    
     app = NumericlaApp()
     app.title('Numerical App') 
-    app.geometry('1200x500')
+    app.geometry('800x500')
     #app.rowconfigure(0, minsize=800, weight=1)
     #app.columnconfigure(1, minsize=800, weight=1)
     app.mainloop()

@@ -15,7 +15,7 @@ Exploring the module Tkinter
 
     + [Bisection Method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/bisection)
     + [Fixed Point method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/fix_point)        
-    + Newton method
+    + [Newton method](https://github.com/alcibiadesBustillo/GUIs-with-Tkinter/tree/master/numerical_methods/newton)
     + Secant method
     + Regula falsi
     + Steffensen's method
